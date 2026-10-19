@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Exposicao_Financeira__c</fullName>
+    <description>Regra 2: impacto por hora x horas para restabelecer, somente em ponto unico de falha. Veja Exposicao completa.</description>
+    <externalId>false</externalId>
+    <formula>IF(Ponto_Unico_de_Falha__c, BLANKVALUE(Impacto_Hora__c, 0) * BLANKVALUE(Horas_Para_Restabelecer__c, 0), 0)</formula>
+    <formulaTreatBlanksAs>BlankAsBlank</formulaTreatBlanksAs>
+    <label>Exposicao financeira (R$)</label>
+    <precision>18</precision>
+    <scale>2</scale>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+    <unique>false</unique>
+</CustomField>

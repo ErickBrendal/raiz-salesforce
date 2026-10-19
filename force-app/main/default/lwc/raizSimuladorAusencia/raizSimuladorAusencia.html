@@ -1,0 +1,118 @@
+<template>
+    <section class="raiz" aria-label="Simulador de ausência">
+        <header class="topo">
+            <div>
+                <p class="sobre">Simulador de ausência · somente leitura</p>
+                <h2 class="titulo">Se esta pessoa faltar amanhã, o que para?</h2>
+            </div>
+            <div class="filtros">
+                <lightning-combobox class="filtro" label="Cliente" value={contaId} options={clientes}
+                    onchange={mudarCliente} data-id="cliente"></lightning-combobox>
+                <lightning-combobox class="filtro" label="Profissional" value={profissionalId} options={profissionais}
+                    onchange={mudarProfissional} data-id="profissional" disabled={vazio}></lightning-combobox>
+            </div>
+        </header>
+
+        <template lwc:if={carregando}>
+            <div class="estado" data-id="carregando" role="status">
+                <lightning-spinner alternative-text="Calculando" size="small" variant="inverse"></lightning-spinner>
+                <p>Recalculando sobre as habilitações…</p>
+            </div>
+        </template>
+
+        <template lwc:if={semPermissao}>
+            <div class="estado estado_alerta" data-id="sem-permissao" role="alert">
+                <p class="estado-titulo">Sem acesso aos dados de habilitação</p>
+                <p>{textoPermissao}</p>
+            </div>
+        </template>
+
+        <template lwc:if={erroGeral}>
+            <div class="estado estado_erro" data-id="erro" role="alert">
+                <p class="estado-titulo">Não foi possível carregar a simulação</p>
+                <p>{erro}</p>
+            </div>
+        </template>
+
+        <template lwc:if={vazio}>
+            <div class="estado" data-id="vazio">
+                <p class="estado-titulo">Nenhuma habilitação registrada neste recorte</p>
+                <p>Sem habilitação não dá para simular — e também não dá para afirmar que nada para.
+                    Registre quem está apto em cada processo crítico.</p>
+            </div>
+        </template>
+
+        <template lwc:if={temResultado}>
+            <div class="kpis" data-id="resultado">
+                <div class="kpi kpi_para">
+                    <span class="kpi-num" data-id="param">{resultado.param}</span>
+                    <span class="kpi-rot">param</span>
+                </div>
+                <div class="kpi kpi_fragil">
+                    <span class="kpi-num" data-id="frageis">{resultado.ficamFrageis}</span>
+                    <span class="kpi-rot">ficam frágeis</span>
+                </div>
+                <div class="kpi kpi_ok">
+                    <span class="kpi-num" data-id="continuam">{resultado.continuam}</span>
+                    <span class="kpi-rot">continuam cobertos</span>
+                </div>
+                <div class="kpi">
+                    <span class="kpi-num kpi-num_texto" data-id="exposicao">{exposicaoFmt}</span>
+                    <span class="kpi-rot">exposição no que para</span>
+                </div>
+                <div class="kpi">
+                    <span class="kpi-num kpi-num_texto" data-id="tempo">{tempoFmt}</span>
+                    <span class="kpi-rot">para restabelecer</span>
+                </div>
+            </div>
+
+            <p class={classeVeredito} data-id="veredito">{resultado.veredito}</p>
+
+            <template lwc:if={temRessalvas}>
+                <ul class="ressalvas">
+                    <template for:each={ressalvas} for:item="r">
+                        <li key={r.id}>{r.texto}</li>
+                    </template>
+                </ul>
+            </template>
+
+            <template lwc:if={temLinhas}>
+                <div class="tabela-wrap">
+                    <table class="tabela" data-id="linhas">
+                        <thead>
+                            <tr>
+                                <th scope="col">Processo</th>
+                                <th scope="col">Área</th>
+                                <th scope="col">Aptos</th>
+                                <th scope="col">Efeito</th>
+                                <th scope="col">Quem cobre</th>
+                                <th scope="col" class="num">Exposição</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={linhas} for:item="l">
+                                <tr key={l.processoId}>
+                                    <td>{l.processo}<span class="sub">{l.criticidadeRotulo}</span></td>
+                                    <td>{l.areaRotulo}</td>
+                                    <td class="mono">{l.transicao}</td>
+                                    <td><span class={l.classeEfeito}>{l.efeito}</span></td>
+                                    <td>{l.substitutos}</td>
+                                    <td class="num mono">{l.exposicaoFmt}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </template>
+
+            <details class="premissas">
+                <summary>Premissas da simulação</summary>
+                <ul>
+                    <template for:each={premissas} for:item="p">
+                        <li key={p.id}>{p.texto}</li>
+                    </template>
+                </ul>
+            </details>
+        </template>
+    </section>
+</template>

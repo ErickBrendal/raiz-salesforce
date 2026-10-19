@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>RAIZ - Simulador de ausencia</masterLabel>
+    <description>Simula a ausencia de um profissional sobre as habilitacoes: o que para, o que fica fragil, o que continua coberto. Somente leitura.</description>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+    </targets>
+</LightningComponentBundle>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>RAIZ_Aprovar_Documentos</name>
+    </customPermissions>
+    <description>Complementa EBL_RAIZ_Cockpit: permite aprovar e publicar documentos no Knowledge Hub RAIZ.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>RAIZ - Aprovador</label>
+</PermissionSet>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>RAIZ - Portfolio Demo Mode</masterLabel>
+    <description>Roteiro de demonstração de 7 a 10 minutos com visão funcional e técnica e a seção Engineering with AI.</description>
+    <targets><target>lightning__AppPage</target><target>lightning__HomePage</target></targets>
+</LightningComponentBundle>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Chave__c</fullName>
+    <description>Mesma execução, mesma chave: a segunda vez atualiza o registro em vez de criar outro.</description>
+    <externalId>true</externalId>
+    <label>Chave de idempotência</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>true</unique>
+    <caseSensitive>true</caseSensitive>
+</CustomField>

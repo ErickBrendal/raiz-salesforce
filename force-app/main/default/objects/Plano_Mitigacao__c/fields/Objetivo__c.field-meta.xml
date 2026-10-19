@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Objetivo__c</fullName>
+    <description>O que o plano resolve.</description>
+    <externalId>false</externalId>
+    <label>Objetivo</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Habilitar substituto</fullName>
+                <default>false</default>
+                <label>Habilitar substituto</label>
+            </value>
+            <value>
+                <fullName>Registrar o processo</fullName>
+                <default>false</default>
+                <label>Registrar o processo</label>
+            </value>
+            <value>
+                <fullName>Atualizar o registro</fullName>
+                <default>false</default>
+                <label>Atualizar o registro</label>
+            </value>
+            <value>
+                <fullName>Levantar informacao</fullName>
+                <default>false</default>
+                <label>Levantar informação</label>
+            </value>
+            <value>
+                <fullName>Aplicar no sistema</fullName>
+                <default>false</default>
+                <label>Aplicar no sistema</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

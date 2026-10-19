@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Submeter_a_revisao</name>
+        <label>Submeter à revisão</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <actionName>RaizGovernancaAction</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>acao</name>
+            <value>
+                <stringValue>submeter</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>documentoId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>Escalar_revisao_vencida</name>
+        <label>Escalar revisão vencida</label>
+        <locationX>440</locationX>
+        <locationY>323</locationY>
+        <actionName>RaizGovernancaAction</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>acao</name>
+            <value>
+                <stringValue>escalar</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>documentoId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <apiVersion>62.0</apiVersion>
+    <description>RAIZ 4.0 — Document Governance Automation. Dispara quando o documento PASSA a "Em Analise". Só roteia: as regras ficam na ação Apex RaizGovernancaAction (ADR-012). Caminho agendado: 1 dia após Prazo_Revisao__c; sem prazo, não agenda (decisão D5).</description>
+    <environments>Default</environments>
+    <interviewLabel>RAIZ Governança {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>RAIZ - Governança da revisão</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Submeter_a_revisao</targetReference>
+        </connector>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Em Analise</stringValue>
+            </value>
+        </filters>
+        <object>Business_Rule__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <scheduledPaths>
+            <name>Um_dia_apos_o_prazo</name>
+            <connector>
+                <targetReference>Escalar_revisao_vencida</targetReference>
+            </connector>
+            <label>1 dia após o prazo</label>
+            <offsetNumber>1</offsetNumber>
+            <offsetUnit>Days</offsetUnit>
+            <recordField>Prazo_Revisao__c</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

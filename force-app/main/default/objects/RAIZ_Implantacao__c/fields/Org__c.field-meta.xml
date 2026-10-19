@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Org__c</fullName>
+    <description>Org de destino (instância/alias, sem credenciais).</description>
+    <label>Org</label>
+    <externalId>false</externalId>
+    <length>100</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

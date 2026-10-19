@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pessoas_Aptas__c</fullName>
+    <description>Quantas pessoas conseguem executar este processo hoje sem ajuda. 1 ou 0 = ponto unico de falha.</description>
+    <externalId>false</externalId>
+    <label>Pessoas aptas a executar</label>
+    <precision>3</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

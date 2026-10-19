@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nivel__c</fullName>
+    <description>Funcionalidade (o que o usuário faz) ou Componente (peça técnica). Contados separadamente.</description>
+    <label>Nível</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value><fullName>Funcionalidade</fullName><default>false</default><label>Funcionalidade</label></value>
+            <value><fullName>Componente</fullName><default>false</default><label>Componente</label></value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

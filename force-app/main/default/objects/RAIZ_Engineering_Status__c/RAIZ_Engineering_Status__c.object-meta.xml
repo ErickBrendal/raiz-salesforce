@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>RAIZ 4.0 - Inventário de funcionalidades e componentes. O que o item DECLARA é editável; o ESTADO DA VALIDAÇÃO só o verificador grava (ADR-015).</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <label>Item de engenharia RAIZ</label>
+    <nameField>
+        <label>Nome</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Itens de engenharia RAIZ</pluralLabel>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

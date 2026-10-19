@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Chave_Par__c</fullName>
+    <caseSensitive>false</caseSensitive>
+    <description>Processo|Profissional, preenchida pelo gatilho. Impede duas habilitacoes da mesma pessoa no mesmo processo e serve de chave de upsert.</description>
+    <externalId>true</externalId>
+    <label>Chave processo-profissional</label>
+    <length>40</length>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>true</unique>
+</CustomField>

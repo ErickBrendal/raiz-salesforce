@@ -1,0 +1,227 @@
+<template>
+  <div class="raiz">
+
+    <!-- ================= CABECALHO ================= -->
+    <div class="topo">
+      <div class="marca">
+        <div class="logo">
+          <span class="l1"></span><span class="l2"></span><span class="l3"></span>
+          <span class="eixo"></span>
+        </div>
+        <div>
+          <p class="kicker">EBL Soluções Corporativas · Método RAIZ</p>
+          <h1>Continuidade Operacional</h1>
+          <p class="sub">Sua operação continua funcionando quando as pessoas mudam.</p>
+        </div>
+      </div>
+
+      <div class="controles">
+        <lightning-combobox
+            label="Cliente"
+            value={contaId}
+            options={clientes}
+            onchange={mudarCliente}
+            variant="label-hidden"
+            class="cb"></lightning-combobox>
+        <p class="carimbo" if:true={dados}>Gerado em {dados.geradoEm}</p>
+      </div>
+    </div>
+
+    <!-- ================= CARREGANDO / ERRO ================= -->
+    <div if:true={carregando} class="estado">
+      <lightning-spinner alternative-text="Carregando" size="small"></lightning-spinner>
+      <p>Lendo o inventário de processos…</p>
+    </div>
+
+    <div if:true={semPermissao} class="alerta alerta_permissao" data-id="sem-permissao">
+      <strong>Sem acesso aos processos do Método RAIZ.</strong>
+      <p>Peça o permission set EBL_RAIZ_Cockpit. Sem ele, o painel não mostra zeros para não parecer que não há risco.</p>
+    </div>
+
+    <div if:true={erro} class="alerta alerta_erro">
+      <strong>Não foi possível montar o cockpit.</strong>
+      <p>{erro}</p>
+    </div>
+
+    <template if:true={pronto}>
+
+      <!-- ================= OS INDICADORES ================= -->
+      <div class="kpis">
+        <template for:each={indicadores} for:item="i">
+          <div key={i.chave} class={i.classe}>
+            <p class="kpi-rot">{i.rotulo}</p>
+            <p class="kpi-val">{i.valorFormatado}</p>
+            <p class="kpi-uni">{i.unidade}</p>
+            <p class="kpi-exp">{i.explicacao}</p>
+          </div>
+        </template>
+      </div>
+
+      <div if:true={temRessalvas} class="alerta alerta_aviso">
+        <template for:each={ressalvas} for:item="r">
+          <p key={r.id}>{r.texto}</p>
+        </template>
+      </div>
+
+      <!-- ================= COBERTURA (v2) ================= -->
+      <div class="bloco" data-id="cobertura">
+        <h2>Estado da cobertura</h2>
+        <p class="bloco-sub">Quantas pessoas conseguem executar cada processo hoje. Sem informação não conta como coberto.</p>
+        <div class="cobertura">
+          <template for:each={estados} for:item="e">
+            <div key={e.rotulo} class={e.classe}>
+              <p class="est-num">{e.quantidade}</p>
+              <p class="est-rot">{e.rotuloExibicao} · {e.percentual}%</p>
+            </div>
+          </template>
+        </div>
+        <p class="fonte">De onde vem a contagem: <b>{dados.coberturaEvidenciada}</b> por habilitação registrada ·
+          <b>{dados.coberturaDeclarada}</b> só declarados · <b>{dados.informacaoInsuficiente}</b> sem dado.</p>
+      </div>
+
+      <!-- ================= MITIGACAO (v2) ================= -->
+      <div class="bloco" data-id="mitigacao">
+        <h2>Mitigação em andamento</h2>
+        <p class="bloco-sub">Planos abertos e o score de risco dos processos com plano: quando o plano nasceu e hoje.</p>
+        <div class="mitig">
+          <div class="mit"><p class="mit-num" data-id="planos">{dados.planosAbertos}</p><p class="mit-rot">planos abertos</p></div>
+          <div class="mit"><p class={classeAtrasados} data-id="atrasados">{dados.planosAtrasados}</p><p class="mit-rot">atrasados</p></div>
+          <div class="mit"><p class="mit-num" data-id="reducao">{reducaoTexto}</p><p class="mit-rot">score dos processos com plano (início → hoje)</p></div>
+          <div class="mit"><p class="mit-num mit-num_alerta" data-id="pu-sem-plano">{dados.pontosUnicosSemPlano}</p><p class="mit-rot">pontos únicos sem plano</p></div>
+        </div>
+      </div>
+
+      <!-- ================= GOVERNANCA DOCUMENTAL (Onda 7) ================= -->
+      <div class="bloco" data-id="governanca">
+        <h2>Governança documental</h2>
+        <p class="bloco-sub">Documentos em revisão nos processos deste recorte. Atrasado: o prazo da revisão já passou. Bloqueado: a automação barrou o encaminhamento porque falta conteúdo ou revisor.</p>
+        <div class="mitig">
+          <div class="mit"><p class="mit-num" data-id="gov-revisao">{dados.govEmRevisao}</p><p class="mit-rot">em revisão</p></div>
+          <div class="mit"><p class={classeGovAtrasadas} data-id="gov-atrasadas">{dados.govAtrasadas}</p><p class="mit-rot">revisões atrasadas</p></div>
+          <div class="mit"><p class={classeGovBloqueadas} data-id="gov-bloqueadas">{dados.govBloqueadas}</p><p class="mit-rot">encaminhamentos bloqueados</p></div>
+          <div class="mit"><p class="mit-num" data-id="gov-sem-prazo">{dados.govSemPrazo}</p><p class="mit-rot">sem prazo de revisão</p></div>
+        </div>
+      </div>
+
+      <!-- O simulador de ausencia agora e o componente c-raiz-simulador-ausencia,
+           calculado por habilitacao (Onda 3). O bloco antigo, por dono, saiu
+           para a pagina nao mostrar duas respostas para a mesma pergunta. -->
+
+      <!-- ================= DUAS COLUNAS ================= -->
+      <div class="duas">
+
+        <!-- PESSOAS-CHAVE -->
+        <div class="bloco">
+          <h2>Concentração de conhecimento</h2>
+          <p class="bloco-sub">
+            Em quantos processos cada pessoa é a única habilitada (status Apto).
+            Quanto mais alto, mais a operação depende dela.
+          </p>
+          <template for:each={pessoasComBarra} for:item="p">
+            <div key={p.userId} class="barra-linha">
+              <div class="barra-cab">
+                <span class="barra-nome">{p.nome}</span>
+                <span class="barra-val">{p.processosSozinho} sozinho · {p.exposicaoFmt}</span>
+              </div>
+              <div class="barra-trilho">
+                <div class="barra-preenche" style={p.estilo}></div>
+              </div>
+            </div>
+          </template>
+          <p if:false={temPessoas} class="vazio">Nenhuma habilitação registrada neste recorte.</p>
+        </div>
+
+        <!-- ONDE O CONHECIMENTO VIVE -->
+        <div class="bloco">
+          <h2>Onde o conhecimento vive hoje</h2>
+          <p class="bloco-sub">
+            O diferencial do método é a camada Sistema — conhecimento dentro da
+            ferramenta onde o trabalho acontece, não em pasta de rede.
+          </p>
+          <template for:each={ondeViveComBarra} for:item="o">
+            <div key={o.rotulo} class="barra-linha">
+              <div class="barra-cab">
+                <span class="barra-nome">{o.rotuloExibicao}</span>
+                <span class="barra-val">{o.quantidade} · {o.percentual}%</span>
+              </div>
+              <div class="barra-trilho">
+                <div class={o.classe} style={o.estilo}></div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      <!-- ================= MATRIZ DE RISCO ================= -->
+      <div class="bloco">
+        <h2>Distribuição de risco</h2>
+        <p class="bloco-sub">
+          Score = criticidade × dependência × desatualização. Máximo 24.
+          Cada barra é um farol; o objetivo do método é esvaziar a da esquerda.
+        </p>
+        <div class="farois">
+          <template for:each={matrizComBarra} for:item="m">
+            <div key={m.rotulo} class="farol">
+              <p class={m.classeNum}>{m.quantidade}</p>
+              <p class="farol-rot">{m.rotuloExibicao}</p>
+              <div class="farol-trilho">
+                <div class={m.classeBarra} style={m.estilo}></div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      <!-- ================= TOP RISCOS ================= -->
+      <div class="bloco">
+        <h2>Processos de maior risco</h2>
+        <p class="bloco-sub">
+          Ordenados por score. Esta é a fila de ataque da fase I — Implantação.
+        </p>
+        <div class="tab-wrap">
+        <table class="tab">
+          <thead>
+            <tr>
+              <th>Processo</th><th>Área</th><th>Dono</th>
+              <th>Cobertura</th><th class="cen">Aptos</th><th class="cen">No sistema</th>
+              <th class="cen">Score</th><th class="dir">Exposição</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template for:each={topComEstilo} for:item="t">
+              <tr key={t.id}>
+                <td class="forte">
+                  <span class={t.pontoClasse}></span>{t.processo}
+                </td>
+                <td>{t.areaRotulo}</td>
+                <td>{t.dono}</td>
+                <td><span class={t.estadoClasse}>{t.estadoRotulo}</span></td>
+                <td class="cen mono" title={t.fonteCobertura}>{t.aptosTexto}</td>
+                <td class="cen">{t.sistemaIcone}</td>
+                <td class="cen"><span class={t.scoreClasse}>{t.score}</span></td>
+                <td class="dir mono">{t.exposicaoFmt}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+        </div>
+      </div>
+
+      <!-- ================= RODAPE / METODO ================= -->
+      <div class="metodo">
+        <p class="metodo-rot">Método RAIZ — quatro fases, cada uma vendável isolada</p>
+        <div class="fases">
+          <div class="fase"><span class="letra">R</span><b>Radiografia</b><span>mapa de risco de conhecimento</span></div>
+          <div class="fase"><span class="letra">A</span><b>Arquitetura</b><span>o que registrar, em que ordem, quem é dono</span></div>
+          <div class="fase"><span class="letra">I</span><b>Implantação</b><span>registro + aplicação no sistema + transferência</span></div>
+          <div class="fase"><span class="letra">Z</span><b>Zeladoria</b><span>revisão programada e indicadores mensais</span></div>
+        </div>
+        <p class="metodo-nota">
+          Os números acima vêm de {textoBase} neste recorte,
+          lidos com o compartilhamento do usuário — o cockpit mostra apenas o que você pode ver.
+        </p>
+      </div>
+
+    </template>
+  </div>
+</template>

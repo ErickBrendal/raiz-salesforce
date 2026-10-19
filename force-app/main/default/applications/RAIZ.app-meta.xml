@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <brand>
+        <headerColor>#070B16</headerColor>
+        <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
+    </brand>
+    <description>RAIZ - Operational Resilience Intelligence: cockpit, processos criticos, Knowledge Hub, cadastro guiado e Kanban.</description>
+    <formFactors>Large</formFactors>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <label>RAIZ</label>
+    <navType>Standard</navType>
+    <tabs>Cockpit_RAIZ</tabs>
+    <tabs>Processo_Critico__c</tabs>
+    <tabs>Profissional__c</tabs>
+    <tabs>RAIZ_Knowledge_Hub</tabs>
+    <tabs>RAIZ_Cadastro_Guiado</tabs>
+    <tabs>CRM_Kanban_Board</tabs>
+    <tabs>RAIZ_Engineering_Intelligence</tabs>
+    <tabs>RAIZ_Engineering_Status__c</tabs>
+    <tabs>RAIZ_Log_Execucao__c</tabs>
+    <tabs>RAIZ_Portfolio_Demo</tabs>
+    <uiType>Lightning</uiType>
+</CustomApplication>

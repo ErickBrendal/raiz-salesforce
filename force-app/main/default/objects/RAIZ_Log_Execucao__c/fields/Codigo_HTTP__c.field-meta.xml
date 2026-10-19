@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Codigo_HTTP__c</fullName>
+    <description>Status HTTP da integração (Onda 9). Vazio para automação.</description>
+    <label>Código HTTP</label>
+    <precision>3</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>RAIZ 4.0 - Deploy REAL na org, registrado a partir da saída do sf CLI (sf project deploy report). Só existe quando há evidência de deploy.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <label>Implantação RAIZ</label>
+    <nameField>
+        <displayFormat>DEP-{0000}</displayFormat>
+        <label>Nome</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Implantações RAIZ</pluralLabel>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

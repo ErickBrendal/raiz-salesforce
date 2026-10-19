@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_Alvo__c</fullName>
+    <description>Prazo do plano. Passou e nao concluiu = atrasado.</description>
+    <externalId>false</externalId>
+    <label>Data alvo</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

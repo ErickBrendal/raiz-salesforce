@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Dono__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Responsavel formal. Processo sem dono nao e mantido.</description>
+    <label>Dono do processo</label>
+    <referenceTo>User</referenceTo>
+    <relationshipLabel>Dono do processo</relationshipLabel>
+    <relationshipName>Processos_Criticos</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

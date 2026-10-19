@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Gatilho__c</fullName>
+    <description>O evento datado que gera orcamento. A gestao do conhecimento e o que se entrega; o gatilho e o que se vende.</description>
+    <label>Gatilho comercial</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Auditoria de certificacao</fullName>
+                <default>false</default>
+                <label>Auditoria de certificacao</label>
+            </value>
+            <value>
+                <fullName>Troca ou implantacao de ERP/CRM</fullName>
+                <default>false</default>
+                <label>Troca ou implantacao de ERP/CRM</label>
+            </value>
+            <value>
+                <fullName>Saida de pessoa-chave</fullName>
+                <default>false</default>
+                <label>Saida de pessoa-chave</label>
+            </value>
+            <value>
+                <fullName>M&amp;A / due diligence</fullName>
+                <default>false</default>
+                <label>M&amp;A / due diligence</label>
+            </value>
+            <value>
+                <fullName>Abertura de nova unidade</fullName>
+                <default>false</default>
+                <label>Abertura de nova unidade</label>
+            </value>
+            <value>
+                <fullName>Exigencia de cliente grande</fullName>
+                <default>false</default>
+                <label>Exigencia de cliente grande</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

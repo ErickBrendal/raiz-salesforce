@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Release__c</fullName>
+    <description>Release correspondente, quando houver.</description>
+    <label>Release</label>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <referenceTo>RAIZ_Release__c</referenceTo>
+    <relationshipLabel>Implantações</relationshipLabel>
+    <relationshipName>Implantacoes</relationshipName>
+    <required>false</required>
+    <type>Lookup</type>
+</CustomField>

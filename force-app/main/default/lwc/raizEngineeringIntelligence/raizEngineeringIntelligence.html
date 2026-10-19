@@ -1,0 +1,214 @@
+<template>
+    <div class="raiz">
+        <header class="topo">
+            <div>
+                <p class="kicker">RAIZ Engineering Intelligence</p>
+                <h1>O que foi construído, e o que está provado</h1>
+                <p class="sub">Inventário de funcionalidades e componentes conferido contra a própria org. Preencher um item não o valida: só o verificador marca "Verificado".</p>
+            </div>
+            <div class="topo-dir">
+                <lightning-button variant="brand" label="Verificar agora" onclick={verificarAgora} disabled={ocupado}></lightning-button>
+                <p class="carimbo" data-id="carimbo">{carimbo}</p>
+            </div>
+        </header>
+
+        <template lwc:if={carregando}>
+            <div class="estado"><lightning-spinner alternative-text="Carregando" size="small"></lightning-spinner></div>
+        </template>
+        <template lwc:if={erro}>
+            <div class="alerta alerta_erro" role="alert"><p>{erro}</p></div>
+        </template>
+        <template lwc:if={aviso}>
+            <div class="alerta alerta_info" data-id="aviso"><p>{aviso}</p></div>
+        </template>
+
+        <template lwc:if={pronto}>
+            <nav class="abas" aria-label="Visões">
+                <template for:each={abas} for:item="a">
+                    <button key={a.chave} class={a.cls} data-chave={a.chave} aria-current={a.atual} onclick={trocarVisao}>{a.rotulo}</button>
+                </template>
+            </nav>
+
+            <!-- EXECUTIVA -->
+            <template lwc:if={vExecutiva}>
+                <section class="bloco">
+                    <div class="duas">
+                        <div>
+                            <h2>Problema</h2>
+                            <p class="texto">Processos críticos dependem de poucas pessoas e o conhecimento não está registrado nem revisado. Quando alguém falta, a operação para e ninguém sabia o tamanho do risco.</p>
+                        </div>
+                        <div>
+                            <h2>Solução</h2>
+                            <p class="texto">O RAIZ mede a cobertura por habilitação, simula ausências, acompanha planos de mitigação e governa o registro do conhecimento até a publicação, tudo dentro do Salesforce.</p>
+                        </div>
+                    </div>
+                </section>
+                <div class="kpis">
+                    <template for:each={indicadores} for:item="i">
+                        <div key={i.chave} class={i.cls} data-kpi={i.chave}>
+                            <p class="kpi-rot">{i.rotulo}</p>
+                            <p class="kpi-val">{i.valor}</p>
+                            <p class="kpi-regra">{i.regra}</p>
+                        </div>
+                    </template>
+                </div>
+                <section class="bloco">
+                    <h2>Pendências e próximos passos</h2>
+                    <template lwc:if={temPendencias}>
+                        <ul class="lista">
+                            <template for:each={pendencias} for:item="p"><li key={p.k}>{p.t}</li></template>
+                        </ul>
+                    </template>
+                    <template lwc:else><p class="texto">Nenhuma pendência registrada.</p></template>
+                </section>
+            </template>
+
+            <!-- FUNCIONAL -->
+            <template lwc:if={vFuncional}>
+                <template for:each={funcionalidades} for:item="f">
+                    <article key={f.id} class="bloco func">
+                        <div class="func-cab">
+                            <h2>{f.nome}</h2>
+                            <span class={f.estadoCls}>{f.estadoRotulo}</span>
+                        </div>
+                        <p class="meta">{f.modulo} · {f.onda} · {f.status} · {f.cobertura}</p>
+                        <dl class="campos">
+                            <div><dt>Problema</dt><dd>{f.problema}</dd></div>
+                            <div><dt>O que faz</dt><dd>{f.objetivo}</dd></div>
+                            <div><dt>Limitações</dt><dd>{f.limitacoes}</dd></div>
+                        </dl>
+                    </article>
+                </template>
+            </template>
+
+            <!-- TECNICA -->
+            <template lwc:if={vTecnica}>
+                <section class="bloco">
+                    <div class="filtro"><lightning-combobox label="Tipo" options={tipos} value={filtroTipo} onchange={mudarTipo}></lightning-combobox></div>
+                    <div class="tab-wrap">
+                        <table class="tab">
+                            <thead><tr><th>Componente</th><th>Tipo</th><th>Nome de API</th><th>Estado</th><th>O que o verificador encontrou</th><th>Teste</th><th>Verificado em</th></tr></thead>
+                            <tbody>
+                                <template for:each={componentes} for:item="c">
+                                    <tr key={c.id}>
+                                        <td class="forte">{c.nome}</td>
+                                        <td>{c.tipo}</td>
+                                        <td class="mono">{c.api}</td>
+                                        <td><span class={c.estadoCls}>{c.estadoRotulo}</span></td>
+                                        <td class="peq">{c.resultado}</td>
+                                        <td class="mono peq">{c.teste}</td>
+                                        <td class="peq">{c.quandoFmt}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </template>
+
+            <!-- ARQUITETURA -->
+            <template lwc:if={vArquitetura}>
+                <template for:each={modulos} for:item="m">
+                    <section key={m.nome} class="bloco">
+                        <div class="func-cab"><h2>{m.nome}</h2><span class="meta">{m.resumo}</span></div>
+                        <p class="meta">Decisões: {m.adrs}</p>
+                        <ul class="pecas">
+                            <template for:each={m.itens} for:item="c">
+                                <li key={c.id}><span class={c.estadoCls}>{c.estadoRotulo}</span> <b>{c.tipo}</b> <span class="mono">{c.api}</span> <span class="peq">{c.tecnologia}</span></li>
+                            </template>
+                        </ul>
+                    </section>
+                </template>
+            </template>
+
+            <!-- PORTFOLIO -->
+            <template lwc:if={vPortfolio}>
+                <p class="nota">Engineering with AI — Human-Led Architecture: cada destaque separa o que foi feito com apoio de IA do que foi decidido e validado pelo autor. Só fatos registrados.</p>
+                <template for:each={portfolio} for:item="f">
+                    <article key={f.id} class="bloco func">
+                        <div class="func-cab"><h2>{f.nome}</h2><span class={f.estadoCls}>{f.estadoRotulo}</span></div>
+                        <p class="meta">{f.onda} · {f.evidenciasAprovadas} evidências aprovadas · {f.adr}</p>
+                        <dl class="campos">
+                            <div><dt>Decisões e validações do autor</dt><dd>{f.humano}</dd></div>
+                            <div><dt>Apoio de IA</dt><dd>{f.usoIa}</dd></div>
+                            <div><dt>Limitações</dt><dd>{f.limitacoes}</dd></div>
+                        </dl>
+                    </article>
+                </template>
+            </template>
+
+            <!-- AUTOMACAO -->
+            <template lwc:if={vAutomacao}>
+                <section class="bloco">
+                    <h2>Últimas execuções</h2>
+                    <p class="texto">Log da automação de governança, do verificador e (Onda 9) da integração. "Execuções" maior que 1 mostra a idempotência: a mesma operação rodou de novo e atualizou o mesmo registro.</p>
+                    <div class="tab-wrap">
+                        <table class="tab">
+                            <thead><tr><th>Log</th><th>Quando</th><th>Tipo</th><th>Etapa</th><th>Resultado</th><th>Execuções</th><th>Mensagem</th></tr></thead>
+                            <tbody>
+                                <template for:each={logs} for:item="l">
+                                    <tr key={l.nome}><td class="mono">{l.nome}</td><td class="peq">{l.quandoFmt}</td><td>{l.tipo}</td><td>{l.etapa}</td><td><span class={l.cls}>{l.status}</span></td><td class="cen">{l.execucoes}</td><td class="peq">{l.mensagem}</td></tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </template>
+
+            <!-- INTEGRACAO -->
+            <template lwc:if={vIntegracao}>
+                <section class="bloco">
+                    <div class="func-cab">
+                        <h2>Integration Hub · GitHub (somente leitura)</h2>
+                        <lightning-button label="Sincronizar agora" onclick={sincronizarAgora} disabled={ocupado}></lightning-button>
+                    </div>
+                    <p class="meta" data-id="repo">Repositório: {repoTexto} · Named Credential: {cfg.credencial}</p>
+                    <p class="texto">A tela lê os registros já gravados na Salesforce, não o GitHub: se o GitHub estiver fora ou limitar as chamadas anônimas, o painel continua funcionando. Uma release publicada só conta como implantada quando existe um deploy registrado ligado a ela.</p>
+                    <template lwc:if={avisoIntegracao}><div class="alerta alerta_info" data-id="aviso-integracao"><p>{avisoIntegracao}</p></div></template>
+                    <template lwc:if={erroIntegracao}><div class="alerta alerta_erro"><p>{erroIntegracao}</p></div></template>
+                    <template lwc:if={semReleases}><p class="texto" data-id="sem-releases">Nenhuma release sincronizada ainda.</p></template>
+                    <template lwc:else>
+                        <table class="tab">
+                            <thead><tr><th>Tag</th><th>Nome</th><th>Publicada em</th><th>Implantada na org?</th></tr></thead>
+                            <tbody>
+                                <template for:each={releases} for:item="r">
+                                    <tr key={r.tag}><td class="mono">{r.tag}</td><td>{r.nome}</td><td class="peq">{r.publicadaFmt}</td><td><span class={r.implCls}>{r.implTxt}</span></td></tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </template>
+                </section>
+                <section class="bloco">
+                    <h2>Últimas sincronizações</h2>
+                    <table class="tab">
+                        <thead><tr><th>Quando</th><th>Resultado</th><th>HTTP</th><th>Mensagem</th></tr></thead>
+                        <tbody>
+                            <template for:each={execucoesIntegracao} for:item="x">
+                                <tr key={x.k}><td class="peq">{x.quandoFmt}</td><td><span class={x.cls}>{x.status}</span></td><td class="cen mono">{x.codigoHttp}</td><td class="peq">{x.mensagem}</td></tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </section>
+            </template>
+
+            <!-- IMPLANTACOES -->
+            <template lwc:if={vImplantacoes}>
+                <section class="bloco">
+                    <h2>Implantações registradas</h2>
+                    <p class="texto">Cada linha vem do relatório do deploy na Salesforce (sf CLI). Uma release no repositório não aparece aqui até haver um deploy dela.</p>
+                    <template lwc:if={semImplantacoes}><p class="texto" data-id="sem-implantacoes">Nenhuma implantação registrada. Rode registrar-implantacoes.sh.</p></template>
+                    <template lwc:else>
+                        <table class="tab">
+                            <thead><tr><th>Concluído em</th><th>Onda</th><th>Deploy ID</th><th>Componentes</th><th>Testes</th><th>Resultado</th></tr></thead>
+                            <tbody>
+                                <template for:each={implantacoes} for:item="d">
+                                    <tr key={d.deployId}><td>{d.quandoFmt}</td><td>{d.onda}</td><td class="mono">{d.deployId}</td><td class="cen">{d.componentes}</td><td class="cen">{d.testesTxt}</td><td><span class={d.cls}>{d.resultado}</span></td></tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </template>
+                </section>
+            </template>
+        </template>
+    </div>
+</template>

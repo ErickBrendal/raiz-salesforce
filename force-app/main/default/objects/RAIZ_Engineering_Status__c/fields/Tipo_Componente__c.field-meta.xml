@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_Componente__c</fullName>
+    <description>Define como o verificador confere o item.</description>
+    <label>Tipo de componente</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value><fullName>Objeto</fullName><default>false</default><label>Objeto</label></value>
+            <value><fullName>Campo</fullName><default>false</default><label>Campo</label></value>
+            <value><fullName>Classe Apex</fullName><default>false</default><label>Classe Apex</label></value>
+            <value><fullName>Trigger</fullName><default>false</default><label>Trigger</label></value>
+            <value><fullName>LWC</fullName><default>false</default><label>LWC</label></value>
+            <value><fullName>Flow</fullName><default>false</default><label>Flow</label></value>
+            <value><fullName>Permission Set</fullName><default>false</default><label>Permission Set</label></value>
+            <value><fullName>Job agendado</fullName><default>false</default><label>Job agendado</label></value>
+            <value><fullName>Aba</fullName><default>false</default><label>Aba</label></value>
+            <value><fullName>App</fullName><default>false</default><label>App</label></value>
+            <value><fullName>Notificacao</fullName><default>false</default><label>Notificacao</label></value>
+            <value><fullName>Named Credential</fullName><default>false</default><label>Named Credential</label></value>
+            <value><fullName>Funcionalidade</fullName><default>false</default><label>Funcionalidade</label></value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,12 @@
+{
+  "name": "raiz-salesforce",
+  "private": true,
+  "version": "1.0.0",
+  "description": "RAIZ - Operational Resilience Intelligence (Salesforce: Apex, LWC, Flow)",
+  "scripts": {
+    "test:unit": "sfdx-lwc-jest"
+  },
+  "devDependencies": {
+    "@salesforce/sfdx-lwc-jest": "^7.0.0"
+  }
+}

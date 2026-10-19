@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Aptos_Habilitados__c</fullName>
+    <description>Habilitacoes com status Apto. O job diario vence as expiradas, por isso o filtro nao usa data.</description>
+    <externalId>false</externalId>
+    <label>Aptos habilitados</label>
+    <summaryFilterItems>
+        <field>Habilitacao__c.Status__c</field>
+        <operation>equals</operation>
+        <value>Apto</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Habilitacao__c.Processo__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

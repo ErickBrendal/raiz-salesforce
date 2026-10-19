@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Demonstracao__c</fullName>
+    <description>Marcado quando o repositório é de terceiros e usado só para provar o mecanismo.</description>
+    <label>Repositório de demonstração</label>
+    <defaultValue>false</defaultValue>
+    <type>Checkbox</type>
+</CustomField>

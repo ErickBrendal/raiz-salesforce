@@ -1,0 +1,8 @@
+node_modules/
+coverage/
+saida/
+.sf/
+.sfdx/
+.localdevserver/
+.DS_Store
+*.log

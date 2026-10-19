@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Processo__c</fullName>
+    <description>Processo que o plano tira do risco.</description>
+    <externalId>false</externalId>
+    <label>Processo</label>
+    <referenceTo>Processo_Critico__c</referenceTo>
+    <relationshipLabel>Planos de mitigacao</relationshipLabel>
+    <relationshipName>Planos_Mitigacao</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

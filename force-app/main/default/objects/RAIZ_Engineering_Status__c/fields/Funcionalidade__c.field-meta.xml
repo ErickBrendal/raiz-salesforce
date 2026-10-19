@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Funcionalidade__c</fullName>
+    <description>Funcionalidade à qual o componente pertence.</description>
+    <label>Funcionalidade</label>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <referenceTo>RAIZ_Engineering_Status__c</referenceTo>
+    <relationshipLabel>Componentes</relationshipLabel>
+    <relationshipName>Componentes</relationshipName>
+    <required>false</required>
+    <type>Lookup</type>
+</CustomField>

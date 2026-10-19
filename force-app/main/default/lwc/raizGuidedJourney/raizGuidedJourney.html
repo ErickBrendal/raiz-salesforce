@@ -1,0 +1,259 @@
+<template>
+    <div class="raiz">
+        <header class="topo">
+            <p class="kicker">RAIZ Guided Journey</p>
+            <h1>Cadastro assistido de conhecimento</h1>
+            <p class="sub">Registre como um processo crítico é executado, para que ele continue funcionando quando a pessoa-chave não estiver.</p>
+        </header>
+
+        <template lwc:if={carregando}>
+            <div class="estado"><lightning-spinner alternative-text="Carregando" size="small"></lightning-spinner></div>
+        </template>
+
+        <template lwc:if={semPermissao}>
+            <div class="alerta alerta_aviso" role="alert">
+                <p><strong>Acesso necessário.</strong> {textoErroCarga}</p>
+            </div>
+        </template>
+        <template lwc:elseif={erroCarga}>
+            <div class="alerta alerta_erro" role="alert">
+                <p><strong>Não foi possível abrir o cadastro.</strong> {textoErroCarga}</p>
+                <lightning-button label="Tentar de novo" onclick={carregar} class="mt"></lightning-button>
+            </div>
+        </template>
+
+        <template lwc:if={pronto}>
+            <nav class="trilha" aria-label="Etapas do cadastro">
+                <ol>
+                    <template for:each={passos} for:item="p">
+                        <li key={p.n}>
+                            <button class={p.cls} data-n={p.n} onclick={clicarPasso} disabled={p.bloqueado}>
+                                <span class="passo-n">{p.n}</span>
+                                <span class="passo-r">{p.rotulo}</span>
+                            </button>
+                        </li>
+                    </template>
+                </ol>
+            </nav>
+
+            <section class="cartao">
+                <template lwc:if={temErroEtapa}>
+                    <div class="alerta alerta_erro" role="alert">
+                        <template for:each={erroEtapaLista} for:item="m">
+                            <p key={m.key}>{m.texto}</p>
+                        </template>
+                    </div>
+                </template>
+
+                <!-- 1. Boas-vindas -->
+                <template lwc:if={e1}>
+                    <h2>Vamos registrar o conhecimento necessário para manter este processo operacional mesmo quando pessoas-chave não estiverem disponíveis.</h2>
+                    <div class="duas">
+                        <div>
+                            <h3>O que você vai fazer</h3>
+                            <ol class="lista">
+                                <li>Escolher o processo crítico.</li>
+                                <li>Classificar o documento.</li>
+                                <li>Definir quem é o autor e quem revisa.</li>
+                                <li>Registrar o passo a passo, as exceções e a contingência.</li>
+                                <li>Revisar tudo e salvar.</li>
+                            </ol>
+                        </div>
+                        <div>
+                            <h3>Tenha em mãos</h3>
+                            <ul class="lista">
+                                <li>O passo a passo do processo, mesmo que em rascunho.</li>
+                                <li>O nome de quem pode revisar (precisa ter permissão de aprovação).</li>
+                                <li>Situações fora do padrão que você já enfrentou.</li>
+                            </ul>
+                            <h3>Por que vale a pena</h3>
+                            <p class="texto">Processo com documento publicado e revisado conta como "registrado" no Cockpit. Sem registro, o conhecimento depende da memória de quem executa.</p>
+                        </div>
+                    </div>
+                    <p class="nota">Nada é gravado até a última tela. Se você sair antes, o que foi digitado se perde; para continuar depois, salve como rascunho no final.</p>
+                    <div class="acoes acoes_dir">
+                        <lightning-button variant="brand" label="Começar" onclick={comecar}></lightning-button>
+                    </div>
+                </template>
+
+                <!-- 2. Processo -->
+                <template lwc:if={e2}>
+                    <h2>Qual processo você vai documentar?</h2>
+                    <p class="texto">A lista mostra os processos críticos a que você tem acesso e se cada um já tem documento.</p>
+                    <lightning-combobox
+                        name="processo"
+                        label="Processo crítico"
+                        placeholder="Escolha um processo"
+                        options={opcoesProcesso}
+                        value={dados.processoId}
+                        onchange={escolherProcesso}
+                        required
+                    ></lightning-combobox>
+                    <template lwc:if={processo}>
+                        <dl class="contexto">
+                            <div><dt>Área</dt><dd>{processo.area}</dd></div>
+                            <div><dt>Responsável</dt><dd>{processo.responsavel}</dd></div>
+                            <div><dt>Criticidade</dt><dd>{processo.criticidade}</dd></div>
+                            <div><dt>Cobertura atual</dt><dd>{coberturaProcesso}</dd></div>
+                            <div><dt>Documento</dt><dd>{processo.situacaoDocumento}</dd></div>
+                        </dl>
+                    </template>
+                    <template lwc:if={situacaoRascunho}>
+                        <div class="alerta alerta_info"><p>{situacao.mensagem}</p></div>
+                    </template>
+                    <template lwc:elseif={situacaoBloqueada}>
+                        <div class="alerta alerta_aviso">
+                            <p>{situacao.mensagem}</p>
+                            <lightning-button label="Abrir Knowledge Hub" onclick={abrirHub} class="mt"></lightning-button>
+                        </div>
+                    </template>
+                    <template lwc:elseif={situacao}>
+                        <div class="alerta alerta_info"><p>{situacao.mensagem}</p></div>
+                    </template>
+                </template>
+
+                <!-- 3. Classificacao -->
+                <template lwc:if={e3}>
+                    <h2>Classifique o documento</h2>
+                    <p class="texto">A classificação ajuda a encontrar o documento e define que tipo de revisão ele recebe.</p>
+                    <lightning-input label="Título" data-campo="titulo" value={dados.titulo} onchange={mudarCampo} max-length="120" required field-level-help="Um nome que qualquer pessoa da área reconheça."></lightning-input>
+                    <div class="duas">
+                        <lightning-combobox label="Tipo de documento" data-campo="tipo" options={opcoesTipo} value={dados.tipo} onchange={mudarCampo} required field-level-help="Procedimento: como fazer. Regra de negócio: o que vale. Contingência: o que fazer quando falha. Checklist: o que conferir."></lightning-combobox>
+                        <lightning-combobox label="Categoria" data-campo="categoria" options={opcoesCategoria} value={dados.categoria} onchange={mudarCampo} required field-level-help="Domínio de negócio do documento."></lightning-combobox>
+                    </div>
+                    <lightning-input-rich-text label="Resumo e finalidade" label-visible data-campo="resumo" value={dados.resumo} onchange={mudarRico}></lightning-input-rich-text>
+                    <p class="ajuda">Para que serve este documento e o que ele cobre, em poucas linhas. É o primeiro campo que o revisor lê.</p>
+                    <lightning-input label="Palavras-chave" data-campo="palavrasChave" value={dados.palavrasChave} onchange={mudarCampo} max-length="255" field-level-help="Separe por vírgula. Use os termos que as pessoas digitariam numa busca."></lightning-input>
+                </template>
+
+                <!-- 4. Responsabilidade -->
+                <template lwc:if={e4}>
+                    <h2>Quem responde por este documento</h2>
+                    <p class="texto">Quem escreve não aprova: o revisor precisa ter a permissão de aprovação e ser outra pessoa.</p>
+                    <div class="duas">
+                        <div class="campo-fixo">
+                            <span class="rot">Autor</span>
+                            <span class="val">{usuarioNome}</span>
+                        </div>
+                        <lightning-combobox label="Revisor" data-campo="revisorId" options={opcoesRevisor} value={dados.revisorId} onchange={mudarCampo}></lightning-combobox>
+                    </div>
+                    <template lwc:if={semRevisores}>
+                        <div class="alerta alerta_aviso"><p>Nenhuma outra pessoa tem a permissão de aprovação. Você pode salvar o rascunho; para encaminhar, um administrador precisa atribuir o permission set "RAIZ - Aprovador" a um revisor.</p></div>
+                    </template>
+                    <div class="tres">
+                        <lightning-input type="date" label="Data de referência" data-campo="dataReferencia" value={dados.dataReferencia} onchange={mudarCampo} field-level-help="Data em que o conteúdo foi conferido com a prática real."></lightning-input>
+                        <lightning-input type="date" label="Próxima revisão" data-campo="proximaRevisao" value={dados.proximaRevisao} onchange={mudarCampo} field-level-help="Quando o documento deve ser revisto para continuar atual."></lightning-input>
+                        <lightning-input type="date" label="Prazo da revisão" data-campo="prazoRevisao" value={dados.prazoRevisao} onchange={mudarCampo} field-level-help="Até quando o revisor deve concluir. Sem prazo, o documento não terá acompanhamento de vencimento."></lightning-input>
+                    </div>
+                    <lightning-combobox label="Criticidade do documento" data-campo="criticidade" options={opcoesCriticidade} value={dados.criticidade} onchange={mudarCampo} required field-level-help="Sugerida a partir da criticidade do processo."></lightning-combobox>
+                    <p class="nota">Por que a vigência importa: um documento vencido conta como desatualizado no Cockpit. Se o processo muda e o documento não, quem depender dele numa ausência vai executar do jeito errado.</p>
+                </template>
+
+                <!-- 5. Conteudo -->
+                <template lwc:if={e5}>
+                    <h2>Registre o conhecimento</h2>
+                    <p class="texto">Escreva para alguém que nunca executou o processo. Etapas são o mínimo para encaminhar; resultado esperado e exceções são exigidos para aprovar.</p>
+                    <template for:each={conteudo} for:item="c">
+                        <div key={c.campo} class="bloco-rico">
+                            <lightning-input-rich-text label={c.rotulo} label-visible data-campo={c.campo} value={c.valor} onchange={mudarRico}></lightning-input-rich-text>
+                            <p class="ajuda">{c.ajuda}</p>
+                        </div>
+                    </template>
+                    <p class="nota">Anexos: depois de salvar, abra o documento e use a lista "Arquivos".</p>
+                </template>
+
+                <!-- 6. Revisao -->
+                <template lwc:if={e6}>
+                    <h2>Confira antes de salvar</h2>
+                    <template lwc:if={temBloqueios}>
+                        <div class="alerta alerta_erro" role="alert">
+                            <p><strong>Corrija para poder salvar:</strong></p>
+                            <template for:each={bloqueios} for:item="b">
+                                <p key={b.key} class="linha-acao">
+                                    <span>{b.mensagem}</span>
+                                    <lightning-button variant="base" label={b.rotulo} data-n={b.etapa} onclick={corrigir}></lightning-button>
+                                </p>
+                            </template>
+                        </div>
+                    </template>
+                    <template lwc:if={temAvisos}>
+                        <div class="alerta alerta_aviso">
+                            <p><strong>Não impede salvar, mas atenção:</strong></p>
+                            <template for:each={avisos} for:item="a">
+                                <p key={a.key}>{a.texto}</p>
+                            </template>
+                        </div>
+                    </template>
+                    <dl class="resumo">
+                        <template for:each={resumoLinhas} for:item="l">
+                            <div key={l.key} class="res-linha">
+                                <dt>{l.k}</dt>
+                                <dd class={l.cls}>{l.v}</dd>
+                                <lightning-button-icon icon-name="utility:edit" variant="bare" alternative-text="Editar" title="Editar" data-n={l.n} onclick={corrigir}></lightning-button-icon>
+                            </div>
+                        </template>
+                    </dl>
+                </template>
+
+                <!-- 7. Confirmacao -->
+                <template lwc:if={e7}>
+                    <template lwc:if={resultado}>
+                        <div class="sucesso">
+                            <p class="kicker">{statusResultado}</p>
+                            <h2>{tituloResultado}</h2>
+                            <p class="texto">{textoCartao}</p>
+                        </div>
+                        <template lwc:if={temAvisosResultado}>
+                            <div class="alerta alerta_aviso">
+                                <template for:each={avisosResultado} for:item="a">
+                                    <p key={a.key}>{a.texto}</p>
+                                </template>
+                            </div>
+                        </template>
+                        <h3>Próximos passos</h3>
+                        <ol class="lista">
+                            <template for:each={passosResultado} for:item="p">
+                                <li key={p.key}>{p.texto}</li>
+                            </template>
+                        </ol>
+                        <div class="acoes">
+                            <lightning-button variant="brand" label="Abrir documento" onclick={abrirDocumento}></lightning-button>
+                            <lightning-button label="Abrir Knowledge Hub" onclick={abrirHub}></lightning-button>
+                            <lightning-button variant="base" label="Cadastrar outro documento" onclick={recomecar}></lightning-button>
+                        </div>
+                    </template>
+                    <template lwc:else>
+                        <h2>Salvar e encaminhar</h2>
+                        <p class="texto"><strong>Salvar rascunho</strong> grava o documento em "Em elaboração" para você continuar depois. <strong>Salvar e encaminhar</strong> grava e envia para a revisão (coluna "Em revisão" do Knowledge Hub). Nos dois casos o cartão do documento no Kanban é criado ou atualizado.</p>
+                        <template lwc:if={temBloqueios}>
+                            <div class="alerta alerta_erro"><p>Há pendências que impedem salvar. Volte à revisão para corrigi-las.</p></div>
+                        </template>
+                        <template lwc:if={erroSalvar}>
+                            <div class="alerta alerta_erro" role="alert">
+                                <p><strong>Não foi salvo.</strong> {erroSalvar}</p>
+                                <p>Os dados continuam aqui; corrija e tente de novo.</p>
+                            </div>
+                        </template>
+                        <div class="acoes">
+                            <lightning-button label="Salvar rascunho" onclick={salvarRascunho} disabled={naoPodeSalvar}></lightning-button>
+                            <lightning-button variant="brand" label="Salvar e encaminhar para revisão" onclick={salvarEncaminhar} disabled={naoPodeSalvar}></lightning-button>
+                        </div>
+                        <template lwc:if={ocupado}>
+                            <div class="estado"><lightning-spinner alternative-text="Salvando" size="small"></lightning-spinner></div>
+                        </template>
+                    </template>
+                </template>
+
+                <footer class="rodape">
+                    <template lwc:if={mostraVoltar}>
+                        <lightning-button label="Voltar" onclick={voltar} disabled={ocupado}></lightning-button>
+                    </template>
+                    <span class="esp"></span>
+                    <template lwc:if={mostraProximo}>
+                        <lightning-button variant="brand" label={rotuloProximo} onclick={proximo} disabled={proximoDesabilitado}></lightning-button>
+                    </template>
+                </footer>
+            </section>
+        </template>
+    </div>
+</template>

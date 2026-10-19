@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Concluir_Exige_Acoes</fullName>
+    <active>true</active>
+    <description>Plano so pode passar para Concluido quando todas as acoes estiverem concluidas. ISCHANGED evita bloquear a edicao de acoes de um plano ja concluido.</description>
+    <errorConditionFormula>AND(ISCHANGED(Status__c), ISPICKVAL(Status__c, &quot;Concluido&quot;), Acoes_Concluidas__c &lt; Acoes_Total__c)</errorConditionFormula>
+    <errorDisplayField>Status__c</errorDisplayField>
+    <errorMessage>Conclua todas as ações antes de concluir o plano.</errorMessage>
+</ValidationRule>

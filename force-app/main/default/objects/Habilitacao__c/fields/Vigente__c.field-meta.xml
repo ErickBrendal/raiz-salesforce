@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Vigente__c</fullName>
+    <description>Apto, profissional ativo e dentro da validade. Visao em tempo real; o roll-up depende do job diario.</description>
+    <formula>AND(ISPICKVAL(Status__c, &quot;Apto&quot;), Profissional__r.Ativo__c, OR(ISBLANK(Valida_Ate__c), Valida_Ate__c &gt;= TODAY()))</formula>
+    <formulaTreatBlanksAs>BlankAsBlank</formulaTreatBlanksAs>
+    <label>Vigente</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

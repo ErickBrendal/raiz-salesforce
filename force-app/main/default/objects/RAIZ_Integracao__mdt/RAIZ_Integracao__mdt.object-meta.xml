@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>RAIZ 4.0 - Configuração da integração com o GitHub: qual repositório ler e por qual Named Credential. Sem segredo (ADR-016).</description>
+    <label>Integração RAIZ</label>
+    <pluralLabel>Integrações RAIZ</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

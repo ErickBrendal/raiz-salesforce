@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Chave__c</fullName>
+    <description>Item + tipo + origem: a mesma verificação atualiza a mesma evidência.</description>
+    <label>Chave</label>
+    <externalId>true</externalId>
+    <length>255</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>true</unique>
+    <caseSensitive>false</caseSensitive>
+</CustomField>

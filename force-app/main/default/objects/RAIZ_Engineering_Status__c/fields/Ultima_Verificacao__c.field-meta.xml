@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Ultima_Verificacao__c</fullName>
+    <description>Quando o verificador conferiu.</description>
+    <label>Última verificação</label>
+    <required>false</required>
+    <type>DateTime</type>
+</CustomField>

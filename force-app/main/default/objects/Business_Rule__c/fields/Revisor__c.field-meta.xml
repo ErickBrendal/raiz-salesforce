@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Revisor__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>RAIZ 4.0 - Quem revisa o documento. Precisa ter a permissão RAIZ_Aprovar_Documentos e não pode ser o autor.</description>
+    <label>Revisor</label>
+    <referenceTo>User</referenceTo>
+    <relationshipName>RAIZ_Documentos_Revisao</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

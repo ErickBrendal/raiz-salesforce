@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Resultado__c</fullName>
+    <description>Status final do deploy.</description>
+    <label>Resultado</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value><fullName>Sucesso</fullName><default>false</default><label>Sucesso</label></value>
+            <value><fullName>Falha</fullName><default>false</default><label>Falha</label></value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,129 @@
+<template>
+    <section class="raiz" aria-label="Planos de mitigação">
+        <header class="topo">
+            <div>
+                <p class="sobre">Planos de mitigação</p>
+                <h2 class="titulo">O que fazer com cada risco, com dono e prazo</h2>
+            </div>
+            <lightning-combobox class="filtro" label="Cliente" value={contaId} options={clientes}
+                onchange={mudarCliente} data-id="cliente"></lightning-combobox>
+        </header>
+
+        <template lwc:if={carregando}>
+            <div class="estado" data-id="carregando" role="status">
+                <lightning-spinner alternative-text="Carregando" size="small" variant="inverse"></lightning-spinner>
+                <p>Lendo processos e planos…</p>
+            </div>
+        </template>
+        <template lwc:if={semPermissao}>
+            <div class="estado estado_alerta" data-id="sem-permissao" role="alert">
+                <p class="estado-titulo">Sem acesso aos planos de mitigação</p>
+                <p>{textoPermissao}</p>
+            </div>
+        </template>
+        <template lwc:if={erroGeral}>
+            <div class="estado estado_erro" data-id="erro" role="alert">
+                <p class="estado-titulo">Não foi possível carregar os planos</p>
+                <p>{erro}</p>
+            </div>
+        </template>
+
+        <template lwc:if={pronto}>
+            <div class="kpis" data-id="resumo">
+                <div class="kpi"><span class="kpi-num" data-id="abertos">{painel.planosAbertos}</span><span class="kpi-rot">planos abertos</span></div>
+                <div class="kpi kpi_atraso"><span class="kpi-num" data-id="atrasados">{painel.planosAtrasados}</span><span class="kpi-rot">atrasados</span></div>
+                <div class="kpi"><span class="kpi-num kpi-num_texto" data-id="acoes">{resumoAcoes}</span><span class="kpi-rot">ações concluídas</span></div>
+                <div class="kpi kpi_risco"><span class="kpi-num" data-id="sem-plano">{painel.processosSemPlano}</span><span class="kpi-rot">processos em risco sem plano</span></div>
+            </div>
+
+            <template lwc:if={erroAcao}>
+                <p class="aviso-erro" data-id="erro-acao" role="alert">{erroAcao}</p>
+            </template>
+
+            <template lwc:if={nadaAFazer}>
+                <div class="estado" data-id="vazio">
+                    <p class="estado-titulo">Nenhum processo em risco sem plano</p>
+                    <p>Todos os processos deste recorte estão cobertos e com registro atualizado.</p>
+                </div>
+            </template>
+
+            <template lwc:if={temPlanos}>
+                <h3 class="secao">Planos em andamento</h3>
+                <div class="planos">
+                    <template for:each={planos} for:item="p">
+                        <article key={p.id} class="plano" data-id="plano">
+                            <div class="plano-cab">
+                                <div>
+                                    <p class="plano-proc">{p.processo}</p>
+                                    <p class="plano-obj">{p.objetivoRotulo} · {p.responsavel}</p>
+                                </div>
+                                <span class={p.classeStatus}>{p.statusRotulo}<template lwc:if={p.atrasado}> · atrasado</template></span>
+                            </div>
+                            <div class="trilho"><div class="preenche" style={p.barra}></div></div>
+                            <p class="plano-meta">{p.acoesConcluidas} de {p.acoesTotal} ações · alvo {p.alvoFmt} <span class="mono">{p.reducao}</span></p>
+                            <ul class="acoes">
+                                <template for:each={p.acoes} for:item="a">
+                                    <li key={a.id} class={a.classe}>
+                                        <span class="acao-txt">{a.descricao}<span class="sub">{a.statusRotulo} · {a.prazoFmt}</span></span>
+                                        <template lwc:if={a.concluida}>
+                                            <span class="feito">✓</span>
+                                        </template>
+                                        <template lwc:else>
+                                            <button class="btn" data-id={a.id} data-acao="concluir" onclick={concluir} disabled={ocupado}>Concluir</button>
+                                        </template>
+                                    </li>
+                                </template>
+                            </ul>
+                            <div class="plano-pe">
+                                <template lwc:if={p.rascunho}>
+                                    <button class="btn btn_sec" data-id={p.id} data-acao="iniciar" onclick={iniciar} disabled={ocupado}>Iniciar execução</button>
+                                </template>
+                                <template lwc:if={p.podeConcluir}>
+                                    <button class="btn btn_pri" data-id={p.id} data-acao="finalizar" onclick={finalizar} disabled={ocupado}>Concluir plano</button>
+                                </template>
+                            </div>
+                        </article>
+                    </template>
+                </div>
+            </template>
+
+            <template lwc:if={temSugestoes}>
+                <h3 class="secao">Processos em risco sem plano</h3>
+                <table class="tabela" data-id="sugestoes">
+                    <thead>
+                        <tr><th scope="col">Processo</th><th scope="col">Por quê</th><th scope="col">Objetivo</th><th scope="col" class="num">Exposição</th><th scope="col"></th></tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={sugestoes} for:item="s">
+                            <tr key={s.processoId}>
+                                <td><span class={s.classeFarol}></span>{s.processo}<span class="sub">{s.conta} · score {s.score}</span></td>
+                                <td>{s.motivo}</td>
+                                <td>{s.objetivoRotulo}</td>
+                                <td class="num mono">{s.exposicaoFmt}</td>
+                                <td class="num">
+                                    <template lwc:if={s.confirmar}>
+                                        <button class="btn btn_pri" data-id={s.processoId} data-acao="confirmar" onclick={confirmarCriacao} disabled={ocupado}>Confirmar</button>
+                                        <button class="btn btn_sec" data-acao="cancelar" onclick={cancelarConfirmacao}>Cancelar</button>
+                                    </template>
+                                    <template lwc:else>
+                                        <button class="btn" data-id={s.processoId} data-acao="criar" onclick={pedirConfirmacao} disabled={ocupado}>Criar plano</button>
+                                    </template>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+                <p class="nota">{maisSugestoes}</p>
+            </template>
+
+            <details class="premissas">
+                <summary>Premissas</summary>
+                <ul>
+                    <template for:each={premissas} for:item="m">
+                        <li key={m.id}>{m.texto}</li>
+                    </template>
+                </ul>
+            </details>
+        </template>
+    </section>
+</template>

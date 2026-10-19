@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_Implementacao__c</fullName>
+    <description>Declarado pelo autor.</description>
+    <label>Status da implementação</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value><fullName>Planejado</fullName><default>false</default><label>Planejado</label></value>
+            <value><fullName>Parcial</fullName><default>false</default><label>Parcial</label></value>
+            <value><fullName>Implementado</fullName><default>false</default><label>Implementado</label></value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,93 @@
+<template>
+    <section class="raiz" aria-label="Knowledge Hub RAIZ">
+        <header class="topo">
+            <div>
+                <p class="sobre">Knowledge Hub · Método RAIZ</p>
+                <h2 class="titulo">Do processo na cabeça ao registro publicado</h2>
+            </div>
+            <lightning-combobox class="filtro" label="Cliente" value={contaId} options={clientes}
+                onchange={mudarCliente} data-id="cliente"></lightning-combobox>
+        </header>
+
+        <template lwc:if={carregando}>
+            <div class="estado" data-id="carregando" role="status">
+                <lightning-spinner alternative-text="Carregando" size="small" variant="inverse"></lightning-spinner>
+                <p>Lendo processos e documentos…</p>
+            </div>
+        </template>
+        <template lwc:if={semPermissao}>
+            <div class="estado estado_alerta" data-id="sem-permissao" role="alert">
+                <p class="estado-titulo">Sem acesso ao Knowledge Hub</p>
+                <p>{textoPermissao}</p>
+            </div>
+        </template>
+        <template lwc:if={erroGeral}>
+            <div class="estado estado_erro" data-id="erro" role="alert">
+                <p class="estado-titulo">Não foi possível carregar o quadro</p>
+                <p>{erro}</p>
+            </div>
+        </template>
+
+        <template lwc:if={pronto}>
+            <p class="resumo" data-id="resumo">{quadro.documentos} documentos · {quadro.publicados} publicados · {quadro.processosSemDocumento} processos sem documento</p>
+            <template lwc:if={avisoAprovador}>
+                <p class="nota" data-id="aviso-aprovador">Você pode escrever e enviar para revisão. Aprovar e publicar exigem a permissão "RAIZ - Aprovar documentos".</p>
+            </template>
+            <template lwc:if={erroAcao}>
+                <p class="aviso-erro" data-id="erro-acao" role="alert">{erroAcao}</p>
+            </template>
+            <template lwc:if={vazio}>
+                <div class="estado" data-id="vazio"><p class="estado-titulo">Nenhum processo neste recorte</p></div>
+            </template>
+
+            <div class="quadro">
+                <template for:each={colunas} for:item="c">
+                    <div key={c.chave} class="coluna" data-coluna={c.chave}>
+                        <p class="coluna-cab">{c.rotulo} <span class="conta">{c.total}</span></p>
+                        <template for:each={c.cartoes} for:item="k">
+                            <article key={k.chave} class="cartao">
+                                <p class="cartao-tit">{k.titulo}</p>
+                                <p class="cartao-sub"><span class={k.chip}>{k.estadoRotulo}</span> {k.criticidade} <span class="sub">{k.revisaoFmt} {k.demandasTxt}</span></p>
+                                <template lwc:if={k.temPendencias}>
+                                    <p class="pend">Falta: {k.pendenciasTxt}</p>
+                                </template>
+                                <template lwc:if={k.governanca}>
+                                    <p class={k.govClasse} data-id="governanca">{k.governanca}</p>
+                                </template>
+                                <div class="acoes">
+                                    <template lwc:if={c.backlog}>
+                                        <template lwc:if={k.confirmar}>
+                                            <button class="btn btn_pri" data-id={k.processoId} data-acao="confirmar" onclick={confirmarCriacao} disabled={ocupado}>Confirmar</button>
+                                            <button class="btn btn_sec" data-acao="cancelar" onclick={cancelar}>Cancelar</button>
+                                        </template>
+                                        <template lwc:else>
+                                            <button class="btn" data-id={k.processoId} data-acao="criar" onclick={pedirCriacao} disabled={ocupado}>Criar documento</button>
+                                        </template>
+                                    </template>
+                                    <template lwc:else>
+                                        <template lwc:if={k.podeVoltar}>
+                                            <button class="btn btn_sec" data-id={k.id} data-acao="voltar" onclick={voltar} disabled={ocupado}>← Voltar</button>
+                                        </template>
+                                        <template lwc:if={k.podeAvancar}>
+                                            <button class="btn" data-id={k.id} data-acao="avancar" onclick={avancar} disabled={ocupado}>{k.textoAvancar}</button>
+                                        </template>
+                                        <template lwc:if={k.motivoBloqueio}>
+                                            <span class="bloqueio">{k.motivoBloqueio}</span>
+                                        </template>
+                                    </template>
+                                </div>
+                            </article>
+                        </template>
+                    </div>
+                </template>
+            </div>
+
+            <details class="premissas">
+                <summary>Regras do quadro</summary>
+                <ul>
+                    <template for:each={premissas} for:item="m"><li key={m.id}>{m.texto}</li></template>
+                </ul>
+            </details>
+        </template>
+    </section>
+</template>

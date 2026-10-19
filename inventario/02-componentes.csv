@@ -1,0 +1,56 @@
+API_Name__c,Name,Nivel__c,Tipo_Componente__c,Modulo__c,Onda__c,Status_Implementacao__c,Tecnologia__c,Teste_Associado__c,Funcionalidade__r.API_Name__c
+Processo_Critico__c,Processo crítico,Componente,Objeto,Cobertura e risco,Onda 1,Implementado,Objeto customizado,,FUNC:COBERTURA
+Profissional__c,Profissional,Componente,Objeto,Cobertura e risco,Onda 1,Implementado,Objeto customizado,,FUNC:COBERTURA
+Habilitacao__c,Habilitação,Componente,Objeto,Cobertura e risco,Onda 1,Implementado,Objeto customizado,,FUNC:COBERTURA
+Processo_Critico__c.Estado_Cobertura__c,Estado da cobertura,Componente,Campo,Cobertura e risco,Onda 1,Implementado,Fórmula,,FUNC:COBERTURA
+Processo_Critico__c.Risco_Score__c,Score de risco,Componente,Campo,Cobertura e risco,Onda 1,Implementado,Fórmula,,FUNC:COBERTURA
+Processo_Critico__c.Exposicao_Financeira__c,Exposição financeira,Componente,Campo,Cobertura e risco,Onda 1,Implementado,Fórmula,,FUNC:COBERTURA
+RaizRiskEngine,Motor de risco,Componente,Classe Apex,Cobertura e risco,Onda 1,Implementado,Apex,RaizRiskEngineTest,FUNC:COBERTURA
+RaizHabilitacaoHandler,Handler de habilitação,Componente,Classe Apex,Cobertura e risco,Onda 1,Implementado,Apex,RaizRiskEngineTest,FUNC:COBERTURA
+HabilitacaoTrigger,Trigger de habilitação,Componente,Trigger,Cobertura e risco,Onda 1,Implementado,Apex trigger,,FUNC:COBERTURA
+ProfissionalTrigger,Trigger de profissional,Componente,Trigger,Cobertura e risco,Onda 1,Implementado,Apex trigger,,FUNC:COBERTURA
+RaizHabilitacaoVencimentoJob,Job de vencimento,Componente,Classe Apex,Cobertura e risco,Onda 1,Implementado,Apex agendado,RaizRiskEngineTest,FUNC:COBERTURA
+RAIZ - vencimento de habilitacoes,Agendamento diário do vencimento,Componente,Job agendado,Cobertura e risco,Onda 1,Implementado,CronTrigger,,FUNC:COBERTURA
+RaizSimulationService,Serviço do simulador,Componente,Classe Apex,Simulador,Onda 3,Implementado,Apex,RaizSimulationServiceTest,FUNC:SIMULADOR
+raizSimuladorAusencia,Tela do simulador,Componente,LWC,Simulador,Onda 3,Implementado,LWC,,FUNC:SIMULADOR
+Plano_Mitigacao__c,Plano de mitigação,Componente,Objeto,Mitigacao,Onda 3,Implementado,Objeto customizado,,FUNC:MITIGACAO
+Acao_Mitigacao__c,Ação de mitigação,Componente,Objeto,Mitigacao,Onda 3,Implementado,Objeto customizado,,FUNC:MITIGACAO
+RaizMitigationService,Serviço de mitigação,Componente,Classe Apex,Mitigacao,Onda 3,Implementado,Apex,RaizMitigationServiceTest,FUNC:MITIGACAO
+AcaoMitigacaoTrigger,Trigger de ação,Componente,Trigger,Mitigacao,Onda 3,Implementado,Apex trigger,,FUNC:MITIGACAO
+raizPlanosMitigacao,Tela de planos,Componente,LWC,Mitigacao,Onda 3,Implementado,LWC,,FUNC:MITIGACAO
+RaizCockpitService,Serviço do Cockpit,Componente,Classe Apex,Cobertura e risco,Onda 4,Implementado,Apex,RaizCockpitServiceTest,FUNC:COCKPIT
+raizExecutiveCockpit,Tela do Cockpit,Componente,LWC,Cobertura e risco,Onda 4,Implementado,LWC,,FUNC:COCKPIT
+Cockpit_RAIZ,Aba Cockpit,Componente,Aba,Cobertura e risco,Onda 4,Implementado,Lightning App Page,,FUNC:COCKPIT
+Business_Rule__c.Processo_Critico__c,Documento ↔ processo,Componente,Campo,Knowledge Hub,Onda 5,Implementado,Lookup,,FUNC:HUB
+RaizKnowledgeService,Serviço do Hub,Componente,Classe Apex,Knowledge Hub,Onda 5,Implementado,Apex,RaizKnowledgeServiceTest,FUNC:HUB
+raizKnowledgeHub,Tela do Hub,Componente,LWC,Knowledge Hub,Onda 5,Implementado,LWC,,FUNC:HUB
+RAIZ_Knowledge_Hub,Aba Knowledge Hub,Componente,Aba,Knowledge Hub,Onda 5,Implementado,Lightning App Page,,FUNC:HUB
+RAIZ_Aprovador,Permissão de aprovador,Componente,Permission Set,Knowledge Hub,Onda 5,Implementado,Permission set + custom permission,,FUNC:HUB
+RAIZ_Leitor,Permissão de leitura,Componente,Permission Set,Knowledge Hub,Onda 5,Implementado,Permission set,,FUNC:HUB
+EBL_RAIZ_Cockpit,Permissão de autor,Componente,Permission Set,Knowledge Hub,Onda 5,Implementado,Permission set,,FUNC:HUB
+RaizJourneyService,Serviço do cadastro guiado,Componente,Classe Apex,Cadastro guiado,Onda 6,Implementado,Apex,RaizJourneyServiceTest,FUNC:CADASTRO
+raizGuidedJourney,Tela do cadastro guiado,Componente,LWC,Cadastro guiado,Onda 6,Implementado,LWC,,FUNC:CADASTRO
+RAIZ_Cadastro_Guiado,Aba Cadastro guiado,Componente,Aba,Cadastro guiado,Onda 6,Implementado,Lightning App Page,,FUNC:CADASTRO
+Business_Rule__c.Revisor__c,Revisor do documento,Componente,Campo,Cadastro guiado,Onda 6,Implementado,Lookup,,FUNC:CADASTRO
+Business_Rule__c.Tipo_Documento__c,Tipo de documento,Componente,Campo,Cadastro guiado,Onda 6,Implementado,Picklist,,FUNC:CADASTRO
+RAIZ,App RAIZ,Componente,App,Plataforma,Onda 6,Implementado,Lightning App,,FUNC:CADASTRO
+RaizGovernancaService,Regras de governança,Componente,Classe Apex,Governanca documental,Onda 7,Implementado,Apex,RaizGovernancaServiceTest,FUNC:GOVERNANCA
+RaizGovernancaAction,Ação invocável de governança,Componente,Classe Apex,Governanca documental,Onda 7,Implementado,Apex invocável,RaizGovernancaActionTest,FUNC:GOVERNANCA
+RaizLog,Log idempotente,Componente,Classe Apex,Governanca documental,Onda 7,Implementado,Apex,RaizGovernancaActionTest,FUNC:GOVERNANCA
+RAIZ_Governanca_Revisao,Flow da revisão (com caminho agendado),Componente,Flow,Governanca documental,Onda 7,Implementado,Record-triggered Flow,,FUNC:GOVERNANCA
+RAIZ_Revisao_Documento,Notificação de revisão,Componente,Notificacao,Governanca documental,Onda 7,Implementado,Custom Notification,,FUNC:GOVERNANCA
+RAIZ_Log_Execucao__c,Log de execução,Componente,Objeto,Governanca documental,Onda 7,Implementado,Objeto customizado,,FUNC:GOVERNANCA
+Business_Rule__c.Governanca_Status__c,Situação da governança,Componente,Campo,Governanca documental,Onda 7,Implementado,Texto (só automação),,FUNC:GOVERNANCA
+RAIZ_Engineering_Status__c,Item de engenharia,Componente,Objeto,Engineering Status,Onda 8,Implementado,Objeto customizado,,FUNC:ENGENHARIA
+RAIZ_Evidencia__c,Evidência,Componente,Objeto,Engineering Status,Onda 8,Implementado,Objeto customizado (mestre-detalhe),,FUNC:ENGENHARIA
+RAIZ_Implantacao__c,Implantação,Componente,Objeto,Engineering Status,Onda 8,Implementado,Objeto customizado,,FUNC:ENGENHARIA
+RAIZ_Release__c,Release,Componente,Objeto,Engineering Status,Onda 8,Implementado,Objeto customizado,,FUNC:ENGENHARIA
+RaizEngineeringVerifier,Verificador,Componente,Classe Apex,Engineering Status,Onda 8,Implementado,Apex,RaizEngineeringTest,FUNC:ENGENHARIA
+RaizEngineeringService,Serviço do painel,Componente,Classe Apex,Engineering Status,Onda 8,Implementado,Apex,RaizEngineeringTest,FUNC:ENGENHARIA
+raizEngineeringIntelligence,Painel Engineering Intelligence,Componente,LWC,Engineering Status,Onda 8,Implementado,LWC,,FUNC:ENGENHARIA
+RaizGitHubService,Serviço da integração GitHub,Componente,Classe Apex,Integracao,Onda 9,Implementado,Apex callout,RaizGitHubServiceTest,FUNC:INTEGRACAO
+RAIZ_GitHub,Named Credential do GitHub,Componente,Named Credential,Integracao,Onda 9,Implementado,Named Credential (sem autenticação),,FUNC:INTEGRACAO
+RAIZ_Integracao__mdt,Configuração da integração,Componente,Objeto,Integracao,Onda 9,Implementado,Custom Metadata Type,,FUNC:INTEGRACAO
+raizPortfolioDemo,Tela do Demo Mode,Componente,LWC,Demo Mode,Onda 10,Implementado,LWC,,FUNC:DEMO
+RAIZ_Portfolio_Demo,Aba Portfolio Demo Mode,Componente,Aba,Demo Mode,Onda 10,Implementado,Lightning App Page,,FUNC:DEMO
+RAIZ_Engineering_Intelligence,Aba Engineering Intelligence,Componente,Aba,Engineering Status,Onda 8,Implementado,Lightning App Page,,FUNC:ENGENHARIA

@@ -1,0 +1,236 @@
+<title>RAIZ Operational Resilience</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: uma coluna editorial de 1080px; cada seção é uma "leitura" do sistema, do veredito ao código. Tema escuro único (paleta do produto). */
+:root {
+  --fundo: #070b16;
+  --sup: #101827;
+  --sup2: #0c1322;
+  --linha: #1e293b;
+  --teal: #2dd4bf;
+  --ciano: #38bdf8;
+  --verde: #34d399;
+  --ambar: #fbbf24;
+  --vermelho: #f43f5e;
+  --tinta: #e8edf7;
+  --tinta2: #8b97ad;
+  --f-display: "Unbounded", "Arial Black", system-ui, sans-serif;
+  --f-corpo: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --f-dado: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--fundo); color: var(--tinta); font-family: var(--f-corpo);
+  font-size: 16px; line-height: 1.6; margin: 0;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.pagina { max-width: 1080px; margin: 0 auto; padding-block: 48px 64px; display: grid; gap: 72px; }
+h1, h2 { font-family: var(--f-display); font-weight: 700; letter-spacing: -.01em; text-wrap: balance; margin: 0; }
+h2 { font-size: clamp(22px, 3vw, 30px); font-weight: 500; }
+p { margin: 0; }
+.rotulo { font-family: var(--f-dado); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--teal); }
+.leve { color: var(--tinta2); }
+.secao { display: grid; gap: 20px; }
+.secao > p.leve { max-width: 65ch; }
+.mono { font-family: var(--f-dado); font-variant-numeric: tabular-nums; }
+a { color: var(--ciano); }
+a:focus-visible { outline: 2px solid var(--ciano); outline-offset: 2px; }
+
+/* ---------- abertura ---------- */
+.abertura { display: grid; gap: 28px; }
+.marca { display: flex; align-items: center; gap: 14px; }
+.raiz-glifo { width: 34px; height: 34px; flex: 0 0 34px; position: relative; }
+.raiz-glifo i { position: absolute; left: 0; width: 34px; background: var(--teal); }
+.raiz-glifo i:nth-child(1) { top: 6px; height: 3px; opacity: .5; }
+.raiz-glifo i:nth-child(2) { top: 15px; height: 5px; }
+.raiz-glifo i:nth-child(3) { top: 26px; height: 3px; opacity: .5; }
+.raiz-glifo b { position: absolute; left: 15px; top: 0; width: 3px; height: 34px; background: var(--ciano); }
+h1 { font-size: clamp(30px, 5.2vw, 56px); line-height: 1.08; max-width: 18ch; }
+h1 em { font-style: normal; color: var(--teal); }
+.tese { font-size: clamp(17px, 2vw, 20px); max-width: 60ch; color: var(--tinta); }
+.veredito {
+  background: var(--sup); border: 1px solid var(--linha); border-left: 4px solid var(--vermelho);
+  border-radius: 10px; padding: 20px 22px; display: grid; gap: 14px;
+}
+.veredito-cab { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
+.trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.trio div { background: var(--sup2); border-radius: 8px; padding: 14px; }
+.trio .n { font-family: var(--f-dado); font-size: clamp(26px, 4vw, 38px); font-weight: 600; line-height: 1; display: block; }
+.para .n { color: var(--vermelho); } .fragil .n { color: var(--ambar); } .ok .n { color: var(--verde); }
+.trio small { color: var(--tinta2); font-size: 13px; }
+.veredito .rodape { font-size: 14px; color: var(--tinta2); }
+.veredito .rodape b { color: var(--tinta); font-weight: 600; }
+
+/* ---------- módulos ---------- */
+.modulos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--linha); border: 1px solid var(--linha); border-radius: 10px; overflow: hidden; }
+.modulo { background: var(--fundo); padding: 20px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.modulo h3 { margin: 0; font-size: 16px; font-weight: 600; }
+.modulo p { color: var(--tinta2); font-size: 14px; }
+.modulo code { font-family: var(--f-dado); font-size: 12px; color: var(--ciano); word-break: break-word; }
+
+/* ---------- cobertura ---------- */
+.barra { display: flex; height: 44px; border-radius: 8px; overflow: hidden; border: 1px solid var(--linha); }
+.barra span { display: flex; align-items: center; padding: 0 12px; font-family: var(--f-dado); font-size: 13px; font-weight: 600; color: var(--fundo); white-space: nowrap; }
+.barra .b-ponto { background: var(--ambar); flex: 12; }
+.barra .b-cob { background: var(--verde); flex: 8; }
+.legenda { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.legenda div { border-top: 3px solid var(--tinta2); padding-top: 10px; display: grid; gap: 2px; }
+.legenda .l-sem { border-color: var(--vermelho); } .legenda .l-ponto { border-color: var(--ambar); }
+.legenda .l-insuf { border-color: var(--tinta2); border-top-style: dashed; } .legenda .l-cob { border-color: var(--verde); }
+.legenda b { font-family: var(--f-dado); font-size: 22px; }
+.legenda span { font-size: 13px; color: var(--tinta2); }
+
+/* ---------- regras ---------- */
+.regras { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 28px; counter-reset: r; }
+.regras li { counter-increment: r; display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding-block: 10px; border-bottom: 1px solid var(--linha); }
+.regras li::before { content: counter(r); font-family: var(--f-dado); color: var(--teal); font-weight: 600; }
+.regras b { font-weight: 600; }
+.regras small { display: block; color: var(--tinta2); font-family: var(--f-dado); font-size: 12px; margin-top: 2px; word-break: break-word; }
+
+/* ---------- engenharia ---------- */
+.tabela-wrap { overflow-x: auto; border: 1px solid var(--linha); border-radius: 10px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 520px; }
+th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--linha); vertical-align: top; }
+th { font-family: var(--f-dado); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--tinta2); font-weight: 600; background: var(--sup); }
+tr:last-child td { border-bottom: none; }
+td.v { font-family: var(--f-dado); font-variant-numeric: tabular-nums; color: var(--teal); white-space: nowrap; }
+td code { font-family: var(--f-dado); font-size: 12px; color: var(--tinta2); }
+
+/* ---------- decisões ---------- */
+.adrs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.adr { background: var(--sup); border: 1px solid var(--linha); border-radius: 8px; padding: 14px 16px; display: grid; grid-template-columns: 56px 1fr; gap: 10px; align-items: baseline; }
+.adr .mono { color: var(--ciano); font-size: 13px; }
+.adr span:last-child { font-size: 14px; }
+
+/* ---------- rodapé ---------- */
+.fim { border-top: 1px solid var(--linha); padding-top: 22px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 14px; color: var(--tinta2); }
+.fim b { color: var(--tinta); font-weight: 600; }
+
+@media (max-width: 760px) {
+  .modulos, .regras, .adrs { grid-template-columns: 1fr; }
+  .legenda { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pagina { gap: 56px; padding-block: 32px 48px; }
+}
+@media (max-width: 420px) {
+  .trio { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .barra span { transition: filter .2s; }
+  .barra span:hover { filter: brightness(1.1); }
+}
+</style>
+
+<main class="pagina">
+
+  <header class="abertura">
+    <div class="marca">
+      <div class="raiz-glifo" aria-hidden="true"><i></i><i></i><i></i><b></b></div>
+      <span class="rotulo">RAIZ · Operational Resilience Intelligence</span>
+    </div>
+    <h1>Se uma pessoa faltar amanhã, <em>o que para?</em></h1>
+    <p class="tese">Uma aplicação Salesforce que responde com nome, processo e valor: quem consegue executar cada processo crítico, o que para numa ausência, quanto isso custa e qual o plano. Nenhum número é digitado no painel; tudo vem de registro e de regra testada.</p>
+
+    <section class="veredito" aria-label="Exemplo do simulador de ausência">
+      <div class="veredito-cab">
+        <span class="rotulo">Simulador · ausência de Fabio Teixeira</span>
+        <span class="mono leve">dados fictícios de demonstração</span>
+      </div>
+      <div class="trio">
+        <div class="para"><span class="n">3</span><small>processos param</small></div>
+        <div class="fragil"><span class="n">1</span><small>fica frágil (sobra 1 pessoa)</small></div>
+        <div class="ok"><span class="n">2</span><small>continuam cobertos</small></div>
+      </div>
+      <p class="rodape"><b class="mono">R$ 620.000</b> de exposição nos processos que param · <b class="mono">144 h úteis</b> para restabelecer · calculado sobre habilitações, somente leitura.</p>
+    </section>
+  </header>
+
+  <section class="secao" aria-labelledby="t-mod">
+    <span class="rotulo">O sistema</span>
+    <h2 id="t-mod">Seis módulos, uma pergunta</h2>
+    <div class="modulos">
+      <div class="modulo"><h3>Habilitação individual</h3><p>Quem executa cada processo hoje, com validade e evidência. Vencida e suspensa não contam.</p><code>Profissional__c · Habilitacao__c</code></div>
+      <div class="modulo"><h3>Motor de risco</h3><p>Quatro estados de cobertura e score de 1 a 24, em fórmula e em Apex, presos por teste de contrato.</p><code>RaizRiskEngine</code></div>
+      <div class="modulo"><h3>Cockpit executivo</h3><p>Dependência, exposição, cobertura e atualidade por cliente, com as premissas declaradas na tela.</p><code>raizExecutiveCockpit</code></div>
+      <div class="modulo"><h3>Simulador de ausência</h3><p>Para, fica frágil ou continua coberto, e quem cobre. Não grava nada.</p><code>RaizSimulationService</code></div>
+      <div class="modulo"><h3>Mitigação</h3><p>Plano com dono, prazo e ações, sugerido pelo estado do processo. Plano não muda cobertura.</p><code>Plano_Mitigacao__c · Acao_Mitigacao__c</code></div>
+      <div class="modulo"><h3>Knowledge Hub</h3><p>Ciclo do registro, do backlog ao publicado. Quem escreve não aprova.</p><code>raizKnowledgeHub</code></div>
+    </div>
+  </section>
+
+  <section class="secao" aria-labelledby="t-cob">
+    <span class="rotulo">Leitura da carga de demonstração</span>
+    <h2 id="t-cob">20 processos, quatro estados</h2>
+    <p class="leve">Doze processos dependem de até uma pessoa apta e somam R$ 2.095.400 de exposição. A contagem vem de 48 habilitações de 12 profissionais fictícios. A carga inclui, de propósito, três substitutos com habilitação vencida: pelo número declarado eram 9 pontos únicos; pela evidência, 12.</p>
+    <div class="barra" role="img" aria-label="12 processos em ponto único e 8 cobertos">
+      <span class="b-ponto">12 ponto único</span><span class="b-cob">8 coberto</span>
+    </div>
+    <div class="legenda">
+      <div class="l-sem"><b>0</b><span>Sem cobertura · ninguém apto</span></div>
+      <div class="l-ponto"><b>12</b><span>Ponto único · uma pessoa</span></div>
+      <div class="l-insuf"><b>0</b><span>Informação insuficiente · nunca verde</span></div>
+      <div class="l-cob"><b>8</b><span>Coberto · duas ou mais</span></div>
+    </div>
+  </section>
+
+  <section class="secao" aria-labelledby="t-reg">
+    <span class="rotulo">Regras travadas em teste</span>
+    <h2 id="t-reg">O que o painel não deixa acontecer</h2>
+    <ol class="regras">
+      <li><span><b>Ponto único é até uma pessoa apta.</b><small>c01, c02 · RaizRiskEngineTest</small></span></li>
+      <li><span><b>Exposição só existe em ponto único.</b><small>c10 · impacto/hora × horas</small></span></li>
+      <li><span><b>Registro vencido não conta como atualizado.</b><small>c12 · o score dobra</small></span></li>
+      <li><span><b>Falta de dado nunca vira verde.</b><small>c04 · estado próprio</small></span></li>
+      <li><span><b>Evidência vence declaração.</b><small>c06 · habilitação prevalece</small></span></li>
+      <li><span><b>Simular não grava nada.</b><small>simulacaoNaoGravaNada · DML zero</small></span></li>
+      <li><span><b>Concluir plano não cria apto.</b><small>cicloCompletoDoPlano</small></span></li>
+      <li><span><b>Quem escreve não aprova.</b><small>autorNaoAprova · permissão própria</small></span></li>
+    </ol>
+  </section>
+
+  <section class="secao" aria-labelledby="t-eng">
+    <span class="rotulo">Engenharia</span>
+    <h2 id="t-eng">Números que dá para conferir</h2>
+    <div class="tabela-wrap">
+      <table>
+        <thead><tr><th>Item</th><th>Valor</th><th>Como conferir</th></tr></thead>
+        <tbody>
+          <tr><td>Componentes de metadados</td><td class="v">115</td><td><code>sf project convert source</code></td></tr>
+          <tr><td>Classes Apex e gatilhos</td><td class="v">13 · 3</td><td><code>classes/ · triggers/</code></td></tr>
+          <tr><td>Métodos de teste Apex</td><td class="v">55 / 55</td><td>passando no último deploy</td></tr>
+          <tr><td>Testes dos componentes (Jest)</td><td class="v">17 / 17</td><td><code>npm run test:unit</code></td></tr>
+          <tr><td>Cobertura por classe</td><td class="v">94–99%</td><td>gatilhos em 100%</td></tr>
+          <tr><td>Fórmula × motor Apex</td><td class="v">120 combinações</td><td><code>c14FormulaEMotorConcordam</code></td></tr>
+          <tr><td>Segurança</td><td class="v">USER_MODE</td><td>with sharing · 3 permission sets por papel</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="secao" aria-labelledby="t-adr">
+    <span class="rotulo">Decisões de arquitetura</span>
+    <h2 id="t-adr">Dez escolhas registradas</h2>
+    <div class="adrs">
+      <div class="adr"><span class="mono">ADR-001</span><span>Habilitação individual como fonte da cobertura</span></div>
+      <div class="adr"><span class="mono">ADR-002</span><span>Fórmula para o atual, Apex para o hipotético</span></div>
+      <div class="adr"><span class="mono">ADR-003</span><span>Informação insuficiente é estado, não zero</span></div>
+      <div class="adr"><span class="mono">ADR-004</span><span>Vencimento por job diário</span></div>
+      <div class="adr"><span class="mono">ADR-005</span><span>Reaproveitar o Documento Funcional, sem ativar Knowledge</span></div>
+      <div class="adr"><span class="mono">ADR-006</span><span>USER_MODE e permissões por papel</span></div>
+      <div class="adr"><span class="mono">ADR-007</span><span>Simulador somente leitura</span></div>
+      <div class="adr"><span class="mono">ADR-008</span><span>Plano é intenção; habilitação é fato</span></div>
+      <div class="adr"><span class="mono">ADR-009</span><span>Validação prévia e testes especificados</span></div>
+      <div class="adr"><span class="mono">ADR-010</span><span>Dados fictícios e idempotentes</span></div>
+    </div>
+  </section>
+
+  <footer class="fim">
+    <span><b>Erick Almeida</b> · Salesforce Certified Administrator · linkedin.com/in/erick-almeida1509</span>
+    <span>Projeto autoral · Salesforce Developer Edition · dados fictícios · out/2026</span>
+  </footer>
+
+</main>

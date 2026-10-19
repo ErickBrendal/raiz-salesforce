@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Origem_Verificacao__c</fullName>
+    <description>Ex.: Verificador Apex; sf CLI.</description>
+    <label>Origem da verificação</label>
+    <externalId>false</externalId>
+    <length>255</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

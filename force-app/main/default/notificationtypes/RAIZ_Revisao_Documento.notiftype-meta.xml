@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomNotificationType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customNotifTypeName>RAIZ - Revisão de documento</customNotifTypeName>
+    <description>Avisos da governança documental do RAIZ: revisão pedida, encaminhamento bloqueado, prazo vencido.</description>
+    <desktop>true</desktop>
+    <masterLabel>RAIZ - Revisão de documento</masterLabel>
+    <mobile>true</mobile>
+</CustomNotificationType>

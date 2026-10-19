@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Modulo__c</fullName>
+    <description>Módulo do RAIZ.</description>
+    <label>Módulo</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value><fullName>Cobertura e risco</fullName><default>false</default><label>Cobertura e risco</label></value>
+            <value><fullName>Simulador</fullName><default>false</default><label>Simulador</label></value>
+            <value><fullName>Mitigacao</fullName><default>false</default><label>Mitigação</label></value>
+            <value><fullName>Knowledge Hub</fullName><default>false</default><label>Knowledge Hub</label></value>
+            <value><fullName>Cadastro guiado</fullName><default>false</default><label>Cadastro guiado</label></value>
+            <value><fullName>Governanca documental</fullName><default>false</default><label>Governança documental</label></value>
+            <value><fullName>Engineering Status</fullName><default>false</default><label>Engineering Status</label></value>
+            <value><fullName>Integracao</fullName><default>false</default><label>Integração</label></value>
+            <value><fullName>Demo Mode</fullName><default>false</default><label>Demo Mode</label></value>
+            <value><fullName>Plataforma</fullName><default>false</default><label>Plataforma</label></value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

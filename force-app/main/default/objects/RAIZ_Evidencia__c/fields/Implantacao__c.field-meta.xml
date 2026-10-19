@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Implantacao__c</fullName>
+    <description>Deploy de origem, quando a evidência vem de um deploy.</description>
+    <label>Implantação</label>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <referenceTo>RAIZ_Implantacao__c</referenceTo>
+    <relationshipLabel>Evidências</relationshipLabel>
+    <relationshipName>Evidencias</relationshipName>
+    <required>false</required>
+    <type>Lookup</type>
+</CustomField>

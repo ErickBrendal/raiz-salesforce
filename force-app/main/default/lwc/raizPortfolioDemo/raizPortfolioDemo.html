@@ -1,0 +1,67 @@
+<template>
+    <div class="raiz">
+        <header class="topo">
+            <div>
+                <p class="kicker">RAIZ Portfolio Demo Mode</p>
+                <h1>Roteiro de demonstração · {totalMinutos} min</h1>
+                <p class="sub">Dados fictícios de demonstração. Os números são lidos na tela durante a apresentação; nada aqui afirma resultado em empresa real.</p>
+            </div>
+            <div class="modos" role="group" aria-label="Visão">
+                <button class={clsFuncional} onclick={verFuncional} data-id="modo-funcional">Visão funcional</button>
+                <button class={clsTecnico} onclick={verTecnico} data-id="modo-tecnico">Visão técnica</button>
+            </div>
+        </header>
+
+        <div class="grade">
+            <nav class="lado" aria-label="Etapas do roteiro">
+                <template for:each={passos} for:item="p">
+                    <button key={p.id} class={p.cls} data-i={p.i} onclick={escolher} data-passo={p.id}>
+                        <span class="n">{p.n}</span><span class="t">{p.titulo}</span><span class="m">{p.minutos} min</span>
+                    </button>
+                </template>
+            </nav>
+
+            <section class="cartao" data-id="passo">
+                <p class="kicker">Etapa {passo.n} · {passo.minutos} min</p>
+                <h2>{passo.titulo}</h2>
+                <p class="texto" data-id="texto">{texto}</p>
+                <dl class="campos">
+                    <div><dt>Onde clicar</dt><dd>{passo.clicar}</dd></div>
+                    <div><dt>Registro</dt><dd>{passo.registro}</dd></div>
+                    <div><dt>O que deve acontecer</dt><dd>{passo.esperado}</dd></div>
+                    <div><dt>Como comprovar</dt><dd>{passo.comprovar}</dd></div>
+                </dl>
+                <template lwc:if={tecnico}>
+                    <div class="qa" data-id="qa">
+                        <p class="q">Pergunta provável: {passo.pergunta}</p>
+                        <p class="a">{passo.resposta}</p>
+                    </div>
+                </template>
+                <p class="limite">Limitação a mencionar: {passo.limitacao}</p>
+                <div class="acoes">
+                    <lightning-button label="Anterior" onclick={anterior} disabled={primeiro}></lightning-button>
+                    <template lwc:if={temAba}><lightning-button label="Abrir a tela" onclick={abrir}></lightning-button></template>
+                    <lightning-button variant="brand" label="Próxima" onclick={proximo} disabled={ultimo}></lightning-button>
+                </div>
+            </section>
+        </div>
+
+        <section class="cartao ia" data-id="ia">
+            <p class="kicker">Engineering with AI — Human-Led Architecture</p>
+            <h2>O que o autor decidiu e o que a IA fez</h2>
+            <template lwc:if={erroPainel}><p class="texto">{erroPainel}</p></template>
+            <div class="kpis">
+                <template for:each={indicadores} for:item="i">
+                    <div key={i.chave} class="kpi"><p class="kpi-rot">{i.rotulo}</p><p class="kpi-val">{i.valor}</p><p class="kpi-regra">{i.regra}</p></div>
+                </template>
+            </div>
+            <template for:each={destaques} for:item="f">
+                <article key={f.id} class="destaque">
+                    <h3>{f.nome} <span class="meta">{f.onda}</span></h3>
+                    <p><b>Decisões e validações do autor:</b> {f.humano}</p>
+                    <p><b>Apoio de IA:</b> {f.usoIa}</p>
+                </article>
+            </template>
+        </section>
+    </div>
+</template>
