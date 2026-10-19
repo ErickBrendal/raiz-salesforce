@@ -56,4 +56,4 @@ Só entram aqui números lidos em saída do sf CLI ou do Jest. Quando um número
 |---|---|
 | Antes de criar o repositório | Erro · HTTP 404 · repositório não encontrado ou não público |
 | Repositório criado, sem release | Ignorado · HTTP 200 · encontrado, mas sem releases publicadas |
-| Após publicar a release v1.0.0 | a medir |
+| Após publicar a release v1.0.0 | Sucesso · HTTP 200 · 1 release lida, 1 nova, 0 atualizadas; release v1.0.0 ligada ao deploy 0AfgK00000Wu1YVSAZ (Ondas 9–10) |
